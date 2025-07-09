@@ -1,0 +1,508 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlockCraft Emporium | Premium Minecraft Items</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --secondary: #FF5722;
+        }
+        
+        .minecraft-font {
+            font-family: 'Minecraft', sans-serif;
+        }
+        
+        .text-block {
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 3px solid #555;
+            padding: 0.5rem;
+        }
+        
+        .pixel-corners {
+            clip-path: 
+                polygon(
+                    0% 5px, 5px 5px, 5px 0%, calc(100% - 5px) 0%, 
+                    calc(100% - 5px) 5px, 100% 5px, 100% calc(100% - 5px), 
+                    calc(100% - 5px) calc(100% - 5px), calc(100% - 5px) 100%, 
+                    5px 100%, 5px calc(100% - 5px), 0% calc(100% - 5px)
+                );
+        }
+        
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .cart-notification {
+            animation: bounce 0.5s ease;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('https://fonts.cdnfonts.com/css/minecraft-4') format('woff2');
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Header with Navigation -->
+    <header class="bg-gray-800 sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <img src="https://placehold.co/50x50" alt="Pixelated Minecraft pickaxe and sword crossed on a stone background" class="h-10 w-10">
+                <h1 class="minecraft-font text-2xl font-bold">BLOCKCRAFT</h1>
+            </div>
+            
+            <nav class="hidden md:flex space-x-6">
+                <a href="#" class="hover:text-green-400 transition">Shop</a>
+                <a href="#" class="hover:text-green-400 transition">Categories</a>
+                <a href="#" class="hover:text-green-400 transition">Deals</a>
+                <a href="#" class="hover:text-green-400 transition">FAQ</a>
+            </nav>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <button id="cart-btn" class="relative p-2 hover:text-green-400 transition">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-green-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </button>
+                </div>
+                <button class="md:hidden p-2" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden bg-gray-800 p-4 md:hidden">
+        <div class="flex flex-col space-y-3">
+            <a href="#" class="hover:text-green-400 transition">Shop</a>
+            <a href="#" class="hover:text-green-400 transition">Categories</a>
+            <a href="#" class="hover:text-green-400 transition">Deals</a>
+            <a href="#" class="hover:text-green-400 transition">FAQ</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative h-96 flex items-center justify-center bg-gray-900 overflow-hidden">
+        <img src="https://placehold.co/1920x1080" alt="Minecraft landscape at sunset showing mountains, forests, and a village with pixelated clouds" class="absolute inset-0 w-full h-full object-cover opacity-60">
+        <div class="relative z-10 text-center px-4">
+            <h1 class="minecraft-font text-4xl md:text-6xl font-bold mb-4">PREMIUM MINECRAFT ITEMS</h1>
+            <p class="text-xl mb-6 max-w-2xl mx-auto">Get the best Minecraft resources, skins, and tools to enhance your gaming experience!</p>
+            <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg pixel-corners transition">SHOP NOW</button>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="py-12 bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap -mx-2">
+                <div class="w-full sm:w-1/2 md:w-1/4 px-2 mb-4">
+                    <div class="bg-gray-700 p-4 rounded-lg h-full hover:bg-gray-600 transition cursor-pointer">
+                        <img src="https://placehold.co/300x200" alt="Collection of Minecraft resource packs with vibrant colors and different themes displayed in a grid" class="w-full h-32 object-cover mb-3 rounded-lg">
+                        <h3 class="text-xl font-bold mb-2">Resource Packs</h3>
+                        <p class="text-gray-300">Enhance your game's visuals with our premium textures.</p>
+                    </div>
+                </div>
+                <div class="w-full sm:w-1/2 md:w-1/4 px-2 mb-4">
+                    <div class="bg-gray-700 p-4 rounded-lg h-full hover:bg-gray-600 transition cursor-pointer">
+                        <img src="https://placehold.co/300x200" alt="Various Minecraft skins showing different character designs including warriors, villagers, and fantasy creatures" class="w-full h-32 object-cover mb-3 rounded-lg">
+                        <h3 class="text-xl font-bold mb-2">Character Skins</h3>
+                        <p class="text-gray-300">Express yourself with unique player skins.</p>
+                    </div>
+                </div>
+                <div class="w-full sm:w-1/2 md:w-1/4 px-2 mb-4">
+                    <div class="bg-gray-700 p-4 rounded-lg h-full hover:bg-gray-600 transition cursor-pointer">
+                        <img src="https://placehold.co/300x200" alt="Minecraft world map showing a detailed castle build with moat and surrounding villages" class="w-full h-32 object-cover mb-3 rounded-lg">
+                        <h3 class="text-xl font-bold mb-2">World Maps</h3>
+                        <p class="text-gray-300">Explore amazing pre-built worlds.</p>
+                    </div>
+                </div>
+                <div class="w-full sm:w-1/2 md:w-1/4 px-2 mb-4">
+                    <div class="bg-gray-700 p-4 rounded-lg h-full hover:bg-gray-600 transition cursor-pointer">
+                        <img src="https://placehold.co/300x200" alt="Collection of Minecraft mods interface showing different gameplay enhancements and new items" class="w-full h-32 object-cover mb-3 rounded-lg">
+                        <h3 class="text-xl font-bold mb-2">Game Mods</h3>
+                        <p class="text-gray-300">Add new features and gameplay mechanics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Items Section -->
+    <section class="py-12 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="minecraft-font text-3xl font-bold mb-8 text-center">FEATURED ITEMS</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Item 1 -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg item-card transition duration-300">
+                    <img src="https://placehold.co/800x600" alt="Minecraft fantasy texture pack showing castle with medieval architecture and colorful stained glass windows" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">Fantasy Texture Pack</h3>
+                            <span class="bg-green-600 text-white text-sm px-2 py-1 rounded">NEW</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">Transform your world with magical medieval textures.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold">$4.99</span>
+                            <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition add-to-cart" data-id="1">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 2 -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg item-card transition duration-300">
+                    <img src="https://placehold.co/800x600" alt="Cyberpunk Minecraft skin pack showing futuristic characters with neon highlights and techwear" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">Cyberpunk Skin Pack</h3>
+                            <span class="bg-orange-600 text-white text-sm px-2 py-1 rounded">POPULAR</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">30 high-tech skins for futuristic adventures.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold">$6.99</span>
+                            <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition add-to-cart" data-id="2">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 3 -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg item-card transition duration-300">
+                    <img src="https://placehold.co/800x600" alt="Medieval Minecraft castle map showing fortress with towers, gates, and surrounding landscape" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">Castle Siege Map</h3>
+                            <span class="bg-blue-600 text-white text-sm px-2 py-1 rounded">BESTSELLER</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">Massive castle with PvP and adventure gameplay.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold">$9.99</span>
+                            <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition add-to-cart" data-id="3">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 4 -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg item-card transition duration-300">
+                    <img src="https://placehold.co/800x600" alt="Minecraft adventure mod interface showing new weapons, creatures, and quest system" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">Epic Adventure Mod</h3>
+                            <span class="bg-purple-600 text-white text-sm px-2 py-1 rounded">UPDATE</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">Over 100 new items, mobs, and quests.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold">$12.99</span>
+                            <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition add-to-cart" data-id="4">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-8">
+                <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition border border-gray-600 minecraft-font">VIEW ALL ITEMS</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Offer Banner -->
+    <section class="py-12 bg-gradient-to-r from-green-900 to-green-700">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="minecraft-font text-3xl md:text-4xl font-bold mb-4">LIMITED TIME OFFER!</h2>
+            <p class="text-xl mb-6 max-w-3xl mx-auto">Get <span class="font-bold text-yellow-300">20% OFF</span> on all purchases over $20 with code <span class="font-bold">MINECRAFT20</span></p>
+            <button class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 px-8 rounded-lg pixel-corners transition">SHOP NOW</button>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-12 bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="minecraft-font text-3xl font-bold mb-12 text-center">WHAT PLAYERS SAY</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://placehold.co/50x50" alt="Pixel art Minecraft character with diamond armor and long brown hair" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">SteveTheMiner</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"The fantasy texture pack completely transformed my world! The attention to detail is incredible, especially on the castle textures."</p>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://placehold.co/50x50" alt="Pixel art Minecraft character with purple hood and enchanted eyes" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">EndQueen</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"Bought the cyberpunk skins for our server. Players loved the variety and quality. Will definitely buy again for future content!"</p>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://placehold.co/50x50" alt="Pixel art Minecraft character with builder's outfit and beard" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">MasterBuilder</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"The castle map saved me weeks of building time. The layout is perfect for my RPG server with plenty of spaces to customize."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end hidden">
+        <div class="bg-gray-800 w-full max-w-md h-full overflow-y-auto">
+            <div class="p-4 border-b border-gray-700 flex justify-between items-center">
+                <h3 class="text-xl font-bold">YOUR CART</h3>
+                <button id="close-cart-btn" class="text-2xl">&times;</button>
+            </div>
+            
+            <div id="cart-items" class="p-4">
+                <!-- Cart items will be added here via JavaScript -->
+                <div class="text-center py-12">
+                    <i class="fas fa-shopping-cart text-5xl text-gray-600 mb-4"></i>
+                    <p class="text-gray-400">Your cart is empty</p>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-gray-700">
+                <div class="flex justify-between mb-4">
+                    <span class="font-bold">TOTAL:</span>
+                    <span id="cart-total" class="font-bold">$0.00</span>
+                </div>
+                <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition">CHECKOUT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-8 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <img src="https://placehold.co/40x40" alt="Miniature Minecraft block logo in green and brown colors" class="h-8 w-8">
+                        <h3 class="minecraft-font text-xl font-bold">BLOCKCRAFT</h3>
+                    </div>
+                    <p class="text-gray-400">Your one-stop shop for premium Minecraft content since 2023.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">SHOP</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Resource Packs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Skins</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">World Maps</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Mods</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">HELP</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Refund Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">CONNECT</h4>
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-discord text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-youtube text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-tiktok text-2xl"></i></a>
+                    </div>
+                    <p class="text-gray-400">Subscribe to our newsletter for updates</p>
+                    <div class="flex mt-2">
+                        <input type="email" placeholder="Your email" class="bg-gray-700 text-white px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500 w-full">
+                        <button class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-r-lg transition">Join</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-6 text-center text-gray-500">
+                <p>&copy; 2023 BlockCraft Emporium. Not affiliated with Mojang or Microsoft. All trademarks property of their respective owners.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Notification -->
+    <div id="cart-notification" class="fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center hidden">
+        <i class="fas fa-check-circle mr-2"></i>
+        <span>Item added to cart!</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Cart functionality
+            const cartBtn = document.getElementById('cart-btn');
+            const closeCartBtn = document.getElementById('close-cart-btn');
+            const cartModal = document.getElementById('cart-modal');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            const cartCount = document.getElementById('cart-count');
+            const cartNotification = document.getElementById('cart-notification');
+            
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Open/close cart
+            cartBtn.addEventListener('click', function() {
+                cartModal.classList.remove('hidden');
+                renderCart();
+            });
+            
+            closeCartBtn.addEventListener('click', function() {
+                cartModal.classList.add('hidden');
+            });
+            
+            // Cart item clicks
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const item = getItemById(id);
+                    addToCart(item);
+                    
+                    // Show notification
+                    cartNotification.classList.remove('hidden');
+                    setTimeout(() => {
+                        cartNotification.classList.add('hidden');
+                    }, 2000);
+                });
+            });
+            
+            // Get item by ID (in a real app, this would be an API call)
+            function getItemById(id) {
+                const items = {
+                    '1': { id: '1', name: 'Fantasy Texture Pack', price: 4.99 },
+                    '2': { id: '2', name: 'Cyberpunk Skin Pack', price: 6.99 },
+                    '3': { id: '3', name: 'Castle Siege Map', price: 9.99 },
+                    '4': { id: '4', name: 'Epic Adventure Mod', price: 12.99 }
+                };
+                return items[id];
+            }
+            
+            // Add item to cart
+            function addToCart(item) {
+                const existingItem = cart.find(cartItem => cartItem.id === item.id);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        ...item,
+                        quantity: 1
+                    });
+                }
+                
+                updateCart();
+            }
+            
+            // Update cart in storage and UI
+            function updateCart() {
+                localStorage.setItem('cart', JSON.stringify(cart));
+                cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+            }
+            
+            // Render cart items
+            function renderCart() {
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = `
+                        <div class="text-center py-12">
+                            <i class="fas fa-shopping-cart text-5xl text-gray-600 mb-4"></i>
+                            <p class="text-gray-400">Your cart is empty</p>
+                        </div>
+                    `;
+                    cartTotal.textContent = '$0.00';
+                    return;
+                }
+                
+                let itemsHTML = '';
+                let total = 0;
+                
+                cart.forEach(item => {
+                    total += item.price * item.quantity;
+                    itemsHTML += `
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <div>
+                                <h4 class="font-medium">${item.name}</h4>
+                                <p class="text-sm text-gray-400">$${item.price.toFixed(2)} × ${item.quantity}</p>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="mr-4">$${(item.price * item.quantity).toFixed(2)}</span>
+                                <button class="text-red-500 remove-item" data-id="${item.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                cartItemsContainer.innerHTML = itemsHTML;
+                cartTotal.textContent = $${total.toFixed(2)};
+                
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.remove-item').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        cart = cart.filter(item => item.id !== id);
+                        updateCart();
+                        renderCart();
+                    });
+                });
+            }
+            
+            // Initialize cart count
+            updateCart();
+        });
+    </script>
+</body>
+</html>
