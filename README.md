@@ -1,377 +1,317 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TurboIG | Professional Social Hub</title>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root {
-            --primary: #6d28d9;
-            --secondary: #8b5cf6;
-            --dark: #1e1b4b;
-            --light: #f5f3ff;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light);
-            color: var(--dark);
-        }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-        }
-        
-        .social-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .update-card {
-            transition: all 0.3s ease;
-            border-left: 4px solid var(--primary);
-        }
-        
-        .update-card:hover {
-            background-color: white;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .floating-btn {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planet Vibe Server Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+      background-color: #f8fafc;
+    }
+    
+    .dark {
+      background-color: #1a1a1a;
+      color: #f8fafc;
+    }
+    
+    .card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .dark .card:hover {
+      box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+    
+    .server-status {
+      height: 10px;
+      width: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+    
+    .online {
+      background-color: #10b981;
+      box-shadow: 0 0 10px #10b981;
+    }
+    
+    .offline {
+      background-color: #ef4444;
+    }
+    
+    .slide-in {
+      animation: slideIn 1s forwards;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    .social-icon {
+      transition: all 0.3s ease;
+    }
+    
+    .social-icon:hover {
+      transform: scale(1.2);
+    }
+    
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+    
+    @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    .progress-bar {
+      animation: progress 3s ease-in-out forwards;
+    }
+    
+    @keyframes progress {
+      from { width: 0; }
+    }
+  </style>
 </head>
 <body class="min-h-screen">
-    <!-- Luxury Navbar -->
-    <nav class="gradient-bg text-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3212db49-eda9-43d7-a14d-3bc1a1d32587.png" alt="TurboIG Logo in purple gradient with modern typography" class="h-8 w-8 rounded-full">
-                    </div>
-                    <div class="hidden md:block">
-                        <div class="ml-10 flex items-baseline space-x-4">
-                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium bg-black bg-opacity-25">Home</a>
-                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-black hover:bg-opacity-25">Updates</a>
-                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-black hover:bg-opacity-25">Features</a>
-                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-black hover:bg-opacity-25">Contact</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-4 flex items-center md:ml-6">
-                        <button class="p-1 rounded-full text-white hover:text-gray-300 focus:outline-none">
-                            <span class="sr-only">View notifications</span>
-                            <i class="fas fa-bell"></i>
-                        </button>
-                    </div>
-                </div>
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-8 slide-in">
+      <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent"><span class="floating">🌍</span> Planet Vibe Dashboard</h1>
+      <button id="themeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800 dark:text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+      </button>
+    </header>
+    
+    <!-- Server Info Card -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg col-span-2">
+        <div class="planet-vibe-status-plugin">
+          <h2 class="text-xl font-semibold mb-4 flex items-center">
+            <span class="server-status online pulse"></span>
+            Planet Vibe Status
+            <span id="refreshBtn" class="ml-2 cursor-pointer hover:text-blue-500">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </span>
+          </h2>
+          
+          <div class="space-y-4">
+            <div class="server-stat">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600 dark:text-gray-300">Server IP:</span>
+                <span id="serverIp" class="font-mono bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded">Loading...</span>
+              </div>
             </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <div class="gradient-bg text-white py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-6xl font-extrabold mb-6">Welcome to <span class="text-yellow-300">TurboIG</span></h1>
-                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Your ultimate social media hub for exclusive updates and premium content</p>
-                <div class="flex justify-center space-x-4">
-                    <a href="#updates" class="px-8 py-3 bg-white text-purple-800 font-bold rounded-full hover:bg-gray-100">Explore Updates</a>
-                    <a href="#social" class="px-8 py-3 border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-purple-800">Connect With Us</a>
-                </div>
+            
+            <div class="server-stat">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600 dark:text-gray-300">Status:</span>
+                <span id="serverStatus" class="status-badge online">Online</span>
+              </div>
             </div>
+            
+            <div class="server-stat">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600 dark:text-gray-300">Players:</span>
+                <span id="playerCount" class="font-mono">0/100</span>
+              </div>
+              <div id="playerBar" class="mt-1 w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
+                <div class="bg-blue-600 h-1.5 rounded-full" style="width: 0%"></div>
+              </div>
+            </div>
+            
+            <div class="server-stat">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600 dark:text-gray-300">Last Ping:</span>
+                <span id="lastPing" class="font-mono">0ms</span>
+              </div>
+            </div>
+          </div>
         </div>
+        
+        <!-- Server Resources Graph -->
+        <div class="mt-6">
+          <h3 class="text-lg font-medium mb-2">Server Resources</h3>
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between mb-1">
+                <span>CPU Usage</span>
+                <span>65%</span>
+              </div>
+              <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                <div class="bg-blue-600 h-2.5 rounded-full progress-bar" style="width: 65%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1">
+                <span>Memory</span>
+                <span>4.2GB/8GB</span>
+              </div>
+              <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                <div class="bg-purple-600 h-2.5 rounded-full progress-bar" style="width: 52.5%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1">
+                <span>Network</span>
+                <span>5.3MB/s</span>
+              </div>
+              <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                <div class="bg-green-600 h-2.5 rounded-full progress-bar" style="width: 42%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Updates Card -->
+      <div class="card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-4">Recent Updates</h2>
+        <div class="space-y-3">
+          <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+            <div class="flex justify-between items-start">
+              <span class="text-sm font-medium">Version 2.1.0</span>
+              <span class="text-xs text-gray-500">2 hours ago</span>
+            </div>
+            <p class="text-sm mt-1">Updated server plugins and improved stability</p>
+          </div>
+          <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+            <div class="flex justify-between items-start">
+              <span class="text-sm font-medium">Daily Backup</span>
+              <span class="text-xs text-gray-500">6 hours ago</span>
+            </div>
+            <p class="text-sm mt-1">Completed automated server backup</p>
+          </div>
+          <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+            <div class="flex justify-between items-start">
+              <span class="text-sm font-medium">New Mode</span>
+              <span class="text-xs text-gray-500">1 day ago</span>
+            </div>
+            <p class="text-sm mt-1">Added survival game mode to server</p>
+          </div>
+        </div>
+        <button class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition">
+          View All Updates
+        </button>
+      </div>
     </div>
-
+    
     <!-- Social Links Section -->
-    <div id="social" class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-extrabold text-center mb-12 text-gray-900">Connect With Us</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- YouTube Card -->
-                <div class="social-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
-                    <div class="p-6 text-center">
-                        <div class="mx-auto h-16 w-16 rounded-full bg-red-100 flex items-center justify-center mb-4">
-                            <i class="fab fa-youtube text-red-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">YouTube</h3>
-                        <p class="text-gray-600 mb-4">Subscribe for premium content</p>
-                        <a href="https://www.youtube.com/@Turboig" target="_blank" class="inline-block px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Visit Channel</a>
-                    </div>
-                </div>
-                
-                <!-- Telegram Card -->
-                <div class="social-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
-                    <div class="p-6 text-center">
-                        <div class="mx-auto h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-                            <i class="fab fa-telegram text-blue-500 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Telegram</h3>
-                        <p class="text-gray-600 mb-4">Join our exclusive community</p>
-                        <a href="https://t.me/turboig" target="_blank" class="inline-block px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Join Channel</a>
-<
-                    </div>
-                </div>
-                
-                <!-- Discord Card -->
-                <div class="social-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
-                    <div class="p-6 text-center">
-                        <div class="mx-auto h-16 w-16 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
-                            <i class="fab fa-discord text-indigo-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Discord</h3>
-                        <p class="text-gray-600 mb-4">Connect with our community</p>
-                        <a href="https://discord.gg/Gg5gcAJXT6" target="_blank" class="inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Join Server</a>
-                    </div>
-                </div>
-                
-                <!-- Instagram Card -->
-                <div class="social-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
-                    <div class="p-6 text-center">
-                        <div class="mx-auto h-16 w-16 rounded-full bg-pink-100 flex items-center justify-center mb-4">
-                            <i class="fab fa-instagram text-pink-500 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Instagram</h3>
-                        <p class="text-gray-600 mb-4">Follow for latest updates</p>
-                        <a href="https://instagram.com/yourprofile" target="_blank" class="inline-block px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90">Follow Us</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Updates Section -->
-    <div id="updates" class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-extrabold text-center mb-12 text-gray-900">Latest Updates</h2>
-            <div class="space-y-6">
-                <!-- Update 1 -->
-                <div class="update-card bg-white p-6 rounded-lg shadow-sm">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center mr-4">
-                            <i class="fas fa-rocket text-purple-600"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-lg font-bold text-gray-900">New Content Series Launch</h3>
-                                <span class="text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded-full">New</span>
-                            </div>
-                            <p class="mt-1 text-gray-600">We're excited to announce our premium content series starting next week with exclusive insights.</p>
-                            <div class="mt-3 flex items-center text-sm text-gray-500">
-                                <i class="far fa-calendar-alt mr-1"></i>
-                                <span>Posted 2 days ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Update 2 -->
-                <div class="update-card bg-white p-6 rounded-lg shadow-sm">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
-                            <i class="fas fa-users text-blue-500"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-lg font-bold text-gray-900">Community Milestone</h3>
-                                <span class="text-xs text-blue-500 bg-blue-50 px-2 py-1 rounded-full">Achievement</span>
-                            </div>
-                            <p class="mt-1 text-gray-600">Our TurboIG Telegram community with exclusive content!</p>
-                            <div class="mt-3 flex items-center text-sm text-gray-500">
-                                <i class="far fa-calendar-alt mr-1"></i>
-                                <span>Posted 1 week ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Update 3 -->
-                <div class="update-card bg-white p-6 rounded-lg shadow-sm">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center mr-4">
-                            <i class="fas fa-video text-green-500"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-lg font-bold text-gray-900">Live Q&A Session</h3>
-                                <span class="text-xs text-green-500 bg-green-50 px-2 py-1 rounded-full">Event</span>
-                            </div>
-                            <p class="mt-1 text-gray-600">Join us this Friday for a special live Q&A session on our YouTube channel.</p>
-                            <div class="mt-3 flex items-center text-sm text-gray-500">
-                                <i class="far fa-calendar-alt mr-1"></i>
-                                <span>Posted 2 weeks ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-10 text-center">
-                <a href="#" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white gradient-bg hover:opacity-90">
-                    View All Updates
-                    <i class="fas fa-chevron-right ml-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Featured Section -->
-    <div class="py-16 gradient-bg text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
-                <div class="mb-10 lg:mb-0">
-                    <h2 class="text-3xl font-extrabold mb-6">Why Join <span class="text-yellow-300">TurboIG</span>?</h2>
-                    <p class="text-lg mb-6">Get access to premium content before anyone else. Our community gets exclusive insights, early releases, and special perks.</p>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-check-circle text-yellow-300"></i>
-                            </div>
-                            <p class="ml-2 text-white">Exclusive content drops</p>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-check-circle text-yellow-300"></i>
-                            </div>
-                            <p class="ml-2 text-white">24/7 community support</p>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-check-circle text-yellow-300"></i>
-                            </div>
-                            <p class="ml-2 text-white">Special giveaways</p>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-check-circle text-yellow-300"></i>
-                            </div>
-                            <p class="ml-2 text-white">Direct Q&A with creators</p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="relative floating-btn">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c11997e7-91fd-4a71-8d9a-86e0e55a5e12.png" alt="Digital creator workspace showing multiple screens with social media analytics and content creation tools" class="rounded-xl shadow-2xl">
-                    <div class="absolute -bottom-5 -left-5 bg-white rounded-lg p-3 shadow-lg">
-                        <div class="flex items-center">
-                            <div class="mr-3">
-                                <i class="fas fa-play-circle text-purple-600 text-3xl"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500">Latest Video</p>
-                                <p class="text-sm font-semibold text-gray-900">How to Grow Your Brand</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">TurboIG</h3>
-                    <p class="text-gray-400">Your premium content hub for social media success and digital growth.</p>
-                    <div class="flex space-x-4 mt-4">
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Home</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">About</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Updates</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Support</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Community</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
-                    <p class="text-gray-400 mb-2">Subscribe to get exclusive updates</p>
-                    <form class="flex">
-                        <input type="email" placeholder="Your email" class="px-4 py-2 rounded-l-lg focus:outline-none text-gray-900 w-full">
-                        <button type="submit" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-r-lg">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 text-sm">© 2023 TurboIG. All rights reserved.</p>
-                <div class="flex space-x-6 mt-4 md:mt-0">
-                    <a href="#" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-white text-sm">Terms of Service</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Floating Action Button -->
-    <div class="fixed bottom-6 right-6">
-        <a href="#" class="floating-btn h-14 w-14 gradient-bg rounded-full shadow-lg flex items-center justify-center text-white text-2xl hover:text-yellow-300">
-            <i class="fas fa-paper-plane"></i>
+    <div class="card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg mb-8">
+      <h2 class="text-xl font-semibold mb-4">Connect With Us</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <a href="https://www.youtube.com/@Turboig" class="social-card flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/725e0995-ba9a-40bb-bd14-fc99b2d68886.png" alt="YouTube logo icon with red background" class="social-icon w-12 h-12 mb-2">
+          <span class="font-medium">YouTube</span>
         </a>
+        <a href="https://discord.gg/2EDfyR7X" class="social-card flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/06b40c9b-1dad-4251-a4c3-00317191966c.png" alt="Discord logo icon with purple background" class="social-icon w-12 h-12 mb-2">
+          <span class="font-medium">Discord</span>
+        </a>
+        <a href="https://t.me/turboig" class="social-card flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cad36edb-e9b4-47b6-adfa-8ffdd1621132.png" alt="Telegram logo icon with blue background" class="social-icon w-12 h-12 mb-2">
+          <span class="font-medium">Telegram</span>
+        </a>
+      </div>
     </div>
-
-    <script>
-        // Simple animations
-        document.addEventListener('DOMContentLoaded', function() {
-            // Animate elements when they come into view
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate_animated', 'animate_fadeInUp');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            document.querySelectorAll('.social-card, .update-card').forEach(card => {
-                observer.observe(card);
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+    
+    <!-- Live Stats Section -->
+    <div class="card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+      <h2 class="text-xl font-semibold mb-4">Live Statistics</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="stat-card bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 dark:text-gray-300">Current Players</p>
+              <h3 class="text-2xl font-bold">24</h3>
+            </div>
+            <div class="bg-blue-100 dark:bg-blue-800/50 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
+          </div>
+          <div class="mt-2">
+            <p class="text-sm text-blue-600 dark:text-blue-300 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+              </svg>
+              <span class="ml-1">3.2% from yesterday</span>
+            </p>
+          </div>
+        </div>
+        
+        <div class="stat-card bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 dark:text-gray-300">Peak Today</p>
+              <h3 class="text-2xl font-bold">37</h3>
+            </div>
+            <div class="bg-green-100 dark:bg-green-800/50 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600 dark:text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+            </div>
+          </div>
+          <div class="mt-2">
+            <p class="text-sm text-green-600 dark:text-green-300 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+              </svg>
+              <span class="ml-1">5.7% from yesterday</span>
+            </p>
+          </div>
+        </div>
+        
+        <div class="stat-card bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 dark:text-gray-300">New Players</p>
+              <h3 class="text-2xl font-bold">12</h3>
+            </div>
+            <div class="bg-purple-100 dark:bg-purple-800/50 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600 dark:text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+              </svg>
+            </div>
+          </div>
+          <div class="mt-2">
+            <p class="
