@@ -1,13 +1,106 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Discord-Style Chat</title>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+  <title>Firebase Chat</title>
+  <script type="module">
+    // Import the functions you need from the Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-storage.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBRSEV49phWA1veT6YvUmzH-I6Jvhr3L28",
+      authDomain: "tournamax-89fff.firebaseapp.com",
+      databaseURL: "https://tournamax-89fff-default-rtdb.firebaseio.com",
+      projectId: "tournamax-89fff",
+      storageBucket: "tournamax-89fff.firebasestorage.app",
+      messagingSenderId: "531295040302",
+      appId: "1:531295040302:web:96da4d8da928ccc1ea00bf"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    // Get Firebase services
+    const db = getDatabase(app);
+    const storage = getStorage(app);
+
+    // Function to send message
+    async function sendMessage() {
+      const messageInput = document.getElementById('messageInput');
+      const fileInput = document.getElementById('fileInput');
+      const message = messageInput.value.trim();
+
+      if (!message && fileInput.files.length === 0) return;
+
+      let messageData = {
+        text: message,
+        timestamp: new Date().toLocaleString(),
+        username: "Player123", // Replace with actual username
+        avatar: "https://example.com/avatar.jpg" // Replace with actual avatar URL
+      };
+
+      // Handle file upload if any
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const fileRef = storageRef(storage, `chat/${file.name}`);
+
+        await uploadBytes(fileRef, file);
+        const fileURL = await getDownloadURL(fileRef);
+        messageData.media = fileURL;
+      }
+
+      // Push message to Firebase Realtime Database
+      push(ref(db, 'messages')).set(messageData);
+
+      // Clear input fields
+      messageInput.value = '';
+      fileInput.value = '';
+    }
+
+    // Function to display messages
+    function displayMessages() {
+      const messagesDiv = document.getElementById('messages');
+      onChildAdded(ref(db, 'messages'), (snapshot) => {
+        const messageData = snapshot.val();
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+
+        // Avatar
+        const avatar = document.createElement('img');
+        avatar.src = messageData.avatar;
+        avatar.alt = 'User Avatar';
+        avatar.classList.add('avatar');
+
+        // Message content
+        const contentDiv = document.createElement('div');
+        contentDiv.classList.add('content');
+        contentDiv.innerHTML = `<strong>${messageData.username}</strong><br>${messageData.text}`;
+
+        // If media is available (image/video)
+        if (messageData.media) {
+          const mediaElement = document.createElement(messageData.media.includes('video') ? 'video' : 'img');
+          mediaElement.src = messageData.media;
+          mediaElement.style.maxWidth = '100%';
+          if (mediaElement.tagName === 'VIDEO') mediaElement.controls = true;
+          contentDiv.appendChild(mediaElement);
+        }
+
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(contentDiv);
+
+        messagesDiv.appendChild(messageDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scroll to bottom
+      });
+    }
+
+    // Initialize message display
+    displayMessages();
+  </script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -15,10 +108,14 @@
       margin: 0;
       padding: 0;
       color: #fff;
+      display: flex;
+      justify-content: center;
+      height: 100vh;
+      align-items: center;
     }
     .chat-container {
+      width: 100%;
       max-width: 600px;
-      margin: 50px auto;
       padding: 20px;
       background-color: #2f3136;
       border-radius: 8px;
@@ -64,13 +161,17 @@
       align-items: center;
       margin-top: 10px;
     }
-    .input-container input {
+    .input-container input[type="text"] {
       width: 80%;
       padding: 10px;
       border-radius: 8px;
       border: none;
       background-color: #40444b;
       color: #fff;
+    }
+    .input-container input[type="file"] {
+      width: 15%;
+      margin-left: 10px;
     }
     .input-container button {
       margin-left: 10px;
@@ -96,97 +197,6 @@
     <button onclick="sendMessage()">Send</button>
   </div>
 </div>
-
-<script>
-  // Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyBRSEV49phWA1veT6YvUmzH-I6Jvhr3L28",
-    authDomain: "tournamax-89fff.firebaseapp.com",
-    databaseURL: "https://tournamax-89fff-default-rtdb.firebaseio.com",
-    projectId: "tournamax-89fff",
-    storageBucket: "tournamax-89fff.firebasestorage.app",
-    messagingSenderId: "531295040302",
-    appId: "1:531295040302:web:96da4d8da928ccc1ea00bf"
-  };
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-  const storage = firebase.storage();
-
-  // Send message function
-  function sendMessage() {
-    const messageInput = document.getElementById('messageInput');
-    const fileInput = document.getElementById('fileInput');
-    const message = messageInput.value.trim();
-
-    if (!message && fileInput.files.length === 0) return; // If message is empty and no file is selected, do nothing
-
-    let messageData = {
-      text: message,
-      timestamp: new Date().toLocaleString(),
-      username: "Player123", // Replace with actual username
-      avatar: "https://example.com/avatar.jpg" // Replace with actual user avatar URL
-    };
-
-    if (fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-      const fileRef = storage.ref().child(`chat/${file.name}`);
-
-      fileRef.put(file).then(() => {
-        fileRef.getDownloadURL().then(url => {
-          messageData.media = url;
-          sendToDatabase(messageData);
-        });
-      });
-    } else {
-      sendToDatabase(messageData);
-    }
-
-    // Clear inputs
-    messageInput.value = '';
-    fileInput.value = '';
-  }
-
-  // Send data to Firebase
-  function sendToDatabase(messageData) {
-    db.ref('messages').push().set(messageData);
-  }
-
-  // Display messages in real-time
-  const messagesDiv = document.getElementById('messages');
-  db.ref('messages').on('child_added', snapshot => {
-    const messageData = snapshot.val();
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('message');
-
-    // Avatar
-    const avatar = document.createElement('img');
-    avatar.src = messageData.avatar;
-    avatar.alt = 'User Avatar';
-    avatar.classList.add('avatar');
-
-    // Text and Media content
-    const contentDiv = document.createElement('div');
-    contentDiv.classList.add('content');
-    contentDiv.innerHTML = `<strong>${messageData.username}</strong><br>${messageData.text}`;
-
-    // Add media if available
-    if (messageData.media) {
-      const mediaElement = document.createElement(messageData.media.includes('video') ? 'video' : 'img');
-      mediaElement.src = messageData.media;
-      mediaElement.style.maxWidth = '100%';
-      if (mediaElement.tagName === 'VIDEO') mediaElement.controls = true;
-      contentDiv.appendChild(mediaElement);
-    }
-
-    messageDiv.appendChild(avatar);
-    messageDiv.appendChild(contentDiv);
-
-    messagesDiv.appendChild(messageDiv);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  }
-</script>
 
 </body>
 </html>
