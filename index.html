@@ -1,180 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editors Central</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        nav a.btn-contact,
-        nav a.btn-whatsapp,
-        nav a.btn-order {
-            padding: 10px 20px;
-            border-radius: 5px;
-            margin: 0 5px;
-        }
-        nav a.btn-contact {
-            background: #007BFF;
-            color: #fff;
-        }
-        nav a.btn-whatsapp {
-            background: #25D366;
-            color: #fff;
-        }
-        nav a.btn-order {
-            background: #FF5722;
-            color: #fff;
-        }
-        header {
-            background: #333;
-            color: #fff;
-            padding: 10px 0;
-            text-align: center;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-            padding: 20px;
-        }
-        nav {
-            margin-top: 15px;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            padding: 5px 10px;
-        }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        .hero {
-            background: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/831eebf4-351e-4771-902e-d92900e14304.png') no-repeat center center;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-        }
-        .hero-content {
-            background: rgba(0,0,0,0.7);
-            padding: 20px;
-            border-radius: 10px;
-        }
-        .btn-primary {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #007BFF;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        .btn-primary:hover {
-            background: #0056b3;
-        }
-        .service-card {
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin: 15px 0;
-        }
-        .btn-contact {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #007BFF;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        .btn-contact:hover {
-            background: #0056b3;
-        }
-        .btn-whatsapp {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #25D366;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-            margin-left: 10px;
-        }
-        .btn-whatsapp:hover {
-            background: #128C7E;
-            transform: scale(1.05);
-            transition: all 0.2s ease;
-        }
-        .btn-order {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #FF5722;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-            margin-left: 10px;
-        }
-        .btn-order:hover {
-            background: #E64A19;
-            transform: scale(1.05);
-            transition: all 0.2s ease;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #1a1a1a; color: #fff; margin: 0; padding: 0; text-align: center; }
+    .profile-container { width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #333; border-radius: 10px; }
+    .profile-header { margin-bottom: 20px; }
+    .profile-header img { border-radius: 50%; width: 120px; height: 120px; }
+    .profile-header h2 { margin-top: 10px; }
+    .profile-header p { color: #ccc; }
+    .media-section { margin-top: 20px; }
+    .media-section input { margin-bottom: 10px; }
+    .media-section img, .media-section video { width: 100%; max-height: 300px; border-radius: 5px; margin-top: 10px; }
+  </style>
 </head>
 <body>
 
-<header>
-    <h1>Editors Central</h1>
-    <nav>
-        <a href="#services">Services</a>
-        <a href="https://gamerffa3.github.io/editor-1/">Contact Us</a>
-        <a href="https://chat.whatsapp.com/EfZRkgRs2zY8BUGXktsPuF">Join WhatsApp Group</a>
-        <a href="https://gamerffa3.github.io/editors-2/">Order Now</a>
-        <a href="projects.html">Projects</a>
-    </nav>
-</header>
+<div class="profile-container">
+  <div class="profile-header">
+    <img id="profileAvatar" src="https://example.com/avatar.jpg" alt="Avatar">
+    <h2 id="username">Player123</h2>
+    <p id="userEmail">player123@example.com</p>
+  </div>
 
-<div class="hero">
-    <div class="hero-content">
-        <h2>Professional Editing Services</h2>
-        <p>Elevate your content with our expert editorial team</p>
-        <a href="#services" class="btn-primary">Explore Services</a>
-    </div>
+  <div class="media-section">
+    <h3>Upload Profile Picture</h3>
+    <input type="file" id="fileInput" accept="image/*">
+    <button onclick="uploadProfilePicture()">Upload</button>
+    <div id="profileMedia"></div>
+  </div>
 </div>
 
-<div class="container">
-    <section id="services">
-        <h3>Our Services</h3>
-        <div class="service-card">
-            <h4>Content Editing</h4>
-            <p>Professional refinement of your written content</p>
-        </div>
-        <div class="service-card">
-            <h4>Proofreading</h4>
-            <p>Detailed correction of grammar and spelling</p>
-        </div>
-        <div class="service-card">
-            <h4>Copy Editing</h4>
-            <p>Improving clarity and readability of your text</p>
-        </div>
-    </section>
+<script>
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyBRSEV49phWA1veT6YvUmzH-I6Jvhr3L28",
+    authDomain: "tournamax-89fff.firebaseapp.com",
+    databaseURL: "https://tournamax-89fff-default-rtdb.firebaseio.com",
+    projectId: "tournamax-89fff",
+    storageBucket: "tournamax-89fff.firebasestorage.app",
+    messagingSenderId: "531295040302",
+    appId: "1:531295040302:web:96da4d8da928ccc1ea00bf"
+  };
 
-    <p>Your one-stop destination for all editing needs. Whether you're looking for professional editing services or resources to improve your editing skills, we've got you covered!</p>
-    
-    <a href="https://gamerffa3.github.io/editor-1/" class="btn-contact">Contact Us</a>
-    <a href="https://chat.whatsapp.com/EfZRkgRs2zY8BUGXktsPuF" class="btn-whatsapp">Join WhatsApp Group</a>
-    <a href="https://gamerffa3.github.io/editors-2/">Order Now</a>
-</div>
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  const db = firebase.database();
+  const storage = firebase.storage();
+
+  // Fetch and display user profile info
+  function fetchUserProfile(userId) {
+    db.ref(`users/${userId}`).once('value').then(snapshot => {
+      const userData = snapshot.val();
+      document.getElementById('username').textContent = userData.username;
+      document.getElementById('userEmail').textContent = userData.email;
+      document.getElementById('profileAvatar').src = userData.avatar;
+    });
+  }
+
+  // Upload new profile picture
+  function uploadProfilePicture() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+    const fileRef = storage.ref().child(`profiles/${file.name}`);
+
+    fileRef.put(file).then(() => {
+      fileRef.getDownloadURL().then(url => {
+        // Update profile picture URL in Firebase
+        const userId = "user123"; // Replace with actual user ID
+        db.ref(`users/${userId}`).update({ avatar: url });
+        
+        // Update avatar in the UI
+        document.getElementById('profileAvatar').src = url;
+      });
+    });
+  }
+
+  // Example: Fetch user profile (replace with actual user ID)
+  fetchUserProfile("user123");
+
+</script>
 
 </body>
 </html>
