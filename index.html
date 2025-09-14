@@ -1,38 +1,99 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Profile</title>
+  <title>Discord-Style Chat</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #1a1a1a; color: #fff; margin: 0; padding: 0; text-align: center; }
-    .profile-container { width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #333; border-radius: 10px; }
-    .profile-header { margin-bottom: 20px; }
-    .profile-header img { border-radius: 50%; width: 120px; height: 120px; }
-    .profile-header h2 { margin-top: 10px; }
-    .profile-header p { color: #ccc; }
-    .media-section { margin-top: 20px; }
-    .media-section input { margin-bottom: 10px; }
-    .media-section img, .media-section video { width: 100%; max-height: 300px; border-radius: 5px; margin-top: 10px; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #36393f;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+    }
+    .chat-container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #2f3136;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      height: 500px;
+    }
+    .messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      background-color: #202225;
+    }
+    .message {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #36393f;
+      max-width: 90%;
+      word-wrap: break-word;
+    }
+    .message img,
+    .message video {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    .message .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .message .content {
+      flex-grow: 1;
+      color: #b9bbbe;
+    }
+    .input-container {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .input-container input {
+      width: 80%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background-color: #40444b;
+      color: #fff;
+    }
+    .input-container button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      background-color: #7289da;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    .input-container button:hover {
+      background-color: #5f73a1;
+    }
   </style>
 </head>
 <body>
 
-<div class="profile-container">
-  <div class="profile-header">
-    <img id="profileAvatar" src="https://example.com/avatar.jpg" alt="Avatar">
-    <h2 id="username">Player123</h2>
-    <p id="userEmail">player123@example.com</p>
-  </div>
-
-  <div class="media-section">
-    <h3>Upload Profile Picture</h3>
-    <input type="file" id="fileInput" accept="image/*">
-    <button onclick="uploadProfilePicture()">Upload</button>
-    <div id="profileMedia"></div>
+<div class="chat-container">
+  <div class="messages" id="messages"></div>
+  <div class="input-container">
+    <input type="text" id="messageInput" placeholder="Type your message...">
+    <input type="file" id="fileInput" accept="image/*,video/*">
+    <button onclick="sendMessage()">Send</button>
   </div>
 </div>
 
@@ -50,41 +111,81 @@
 
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-
   const db = firebase.database();
   const storage = firebase.storage();
 
-  // Fetch and display user profile info
-  function fetchUserProfile(userId) {
-    db.ref(`users/${userId}`).once('value').then(snapshot => {
-      const userData = snapshot.val();
-      document.getElementById('username').textContent = userData.username;
-      document.getElementById('userEmail').textContent = userData.email;
-      document.getElementById('profileAvatar').src = userData.avatar;
-    });
-  }
-
-  // Upload new profile picture
-  function uploadProfilePicture() {
+  // Send message function
+  function sendMessage() {
+    const messageInput = document.getElementById('messageInput');
     const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0];
-    const fileRef = storage.ref().child(`profiles/${file.name}`);
+    const message = messageInput.value.trim();
 
-    fileRef.put(file).then(() => {
-      fileRef.getDownloadURL().then(url => {
-        // Update profile picture URL in Firebase
-        const userId = "user123"; // Replace with actual user ID
-        db.ref(`users/${userId}`).update({ avatar: url });
-        
-        // Update avatar in the UI
-        document.getElementById('profileAvatar').src = url;
+    if (!message && fileInput.files.length === 0) return; // If message is empty and no file is selected, do nothing
+
+    let messageData = {
+      text: message,
+      timestamp: new Date().toLocaleString(),
+      username: "Player123", // Replace with actual username
+      avatar: "https://example.com/avatar.jpg" // Replace with actual user avatar URL
+    };
+
+    if (fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const fileRef = storage.ref().child(`chat/${file.name}`);
+
+      fileRef.put(file).then(() => {
+        fileRef.getDownloadURL().then(url => {
+          messageData.media = url;
+          sendToDatabase(messageData);
+        });
       });
-    });
+    } else {
+      sendToDatabase(messageData);
+    }
+
+    // Clear inputs
+    messageInput.value = '';
+    fileInput.value = '';
   }
 
-  // Example: Fetch user profile (replace with actual user ID)
-  fetchUserProfile("user123");
+  // Send data to Firebase
+  function sendToDatabase(messageData) {
+    db.ref('messages').push().set(messageData);
+  }
 
+  // Display messages in real-time
+  const messagesDiv = document.getElementById('messages');
+  db.ref('messages').on('child_added', snapshot => {
+    const messageData = snapshot.val();
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message');
+
+    // Avatar
+    const avatar = document.createElement('img');
+    avatar.src = messageData.avatar;
+    avatar.alt = 'User Avatar';
+    avatar.classList.add('avatar');
+
+    // Text and Media content
+    const contentDiv = document.createElement('div');
+    contentDiv.classList.add('content');
+    contentDiv.innerHTML = `<strong>${messageData.username}</strong><br>${messageData.text}`;
+
+    // Add media if available
+    if (messageData.media) {
+      const mediaElement = document.createElement(messageData.media.includes('video') ? 'video' : 'img');
+      mediaElement.src = messageData.media;
+      mediaElement.style.maxWidth = '100%';
+      if (mediaElement.tagName === 'VIDEO') mediaElement.controls = true;
+      contentDiv.appendChild(mediaElement);
+    }
+
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(contentDiv);
+
+    messagesDiv.appendChild(messageDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
 </script>
 
 </body>
